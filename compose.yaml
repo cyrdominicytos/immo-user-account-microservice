@@ -1,0 +1,42 @@
+services:
+  immo-user-account:
+    restart: on-failure
+    container_name: immo-user-account
+    build: .
+    ports:
+      - 8081:8081
+    environment:
+      MYSQL_DATABASE: immo_user_account_db
+      MYSQL_PASSWORD: admin
+      MYSQL_ROOT_PASSWORD: admin
+      MYSQL_USER: admin
+      MYSQL_HOST: database
+    depends_on:
+      - database
+    volumes:
+      - .m2:/root/.m2
+    networks:
+      - immo-network
+
+  database:
+    image: 'mysql:latest'
+    container_name: immo_user_account_db
+    restart: always
+    ports:
+      - 3306:3306
+    volumes:
+      - data_db:/var/lib/mysql
+    environment:
+      MYSQL_DATABASE: immo_user_account_db
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: admin
+      MYSQL_ROOT_PASSWORD: admin
+    networks:
+      - immo-network
+
+volumes:
+  data_db: {}
+
+networks:
+  immo-network:
+    external: true
