@@ -6,20 +6,20 @@ spring:
     username: ${MYSQL_USER:admin}
     password: ${MYSQL_USER:admin}
     driver-class-name: com.mysql.cj.jdbc.Driver
-    jpa:
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
       hibernate:
-        ddl-auto: update
-      properties:
-        hibernate:
-          dialect: org.hibernate.dialect.MySQLDialect
-  eureka:
-    client:
-      register-with-eureka: true
-      fetch-registry: true
-      service-url:
-        defaultZone: http://immo-eureka-server:8761/eureka
-    instance:
-      hostname: immo-user-account
+        dialect: org.hibernate.dialect.MySQLDialect
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://immo-eureka-server:8761/eureka
+  instance:
+    hostname: immo-user-account
 
 
 server:
@@ -27,6 +27,7 @@ server:
   servlet:
     context-path: /api
 
-  keyStore:
-    path: keystore.jks
-    password: password
+keyStore:
+  path: keystore.jks
+  password: password
+  alias: auth-server
