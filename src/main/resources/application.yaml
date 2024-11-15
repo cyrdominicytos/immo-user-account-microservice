@@ -2,16 +2,17 @@ spring:
   application:
     name: immo-user-account
   datasource:
-    url: jdbc:mysql://localhost:3306/${MYSQL_DATABASE:user_account_db}
+    url: jdbc:mysql://${MYSQL_HOST:localhost}:${MYSQL_PORT:3306}/${MYSQL_DATABASE:immo_auth_db}
     username: ${MYSQL_USER:admin}
     password: ${MYSQL_USER:admin}
-    driver-class-name: com.mysql.cj.jdbc.Driver
+    #driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
-    hibernate:
-      ddl-auto: update
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQLDialect
+    hibernate:
+      ddl-auto: update
+
 eureka:
   client:
     register-with-eureka: true

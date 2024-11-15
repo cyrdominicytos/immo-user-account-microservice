@@ -1,8 +1,10 @@
 package cyr.tos.immouseraccount.service;
 
 import cyr.tos.immouseraccount.config.AuthDetails;
+import cyr.tos.immouseraccount.config.DefaultUserAccountMapper;
 import cyr.tos.immouseraccount.config.UserAccountMapper;
 import cyr.tos.immouseraccount.dao.UserAccountRepository;
+import cyr.tos.immouseraccount.dto.DefaultUserAccountDto;
 import cyr.tos.immouseraccount.dto.UserAccountDto;
 import cyr.tos.immouseraccount.model.UserAccount;
 import org.springframework.stereotype.Service;
@@ -13,6 +15,7 @@ public class UserAccountService {
 
     private final UserAccountRepository userAccountRepository;
     private final UserAccountMapper userAccountMapper = UserAccountMapper.INSTANCE;
+    private final DefaultUserAccountMapper defaultUserAccountMapper = DefaultUserAccountMapper.INSTANCE;
     public UserAccountService(UserAccountRepository userAccountRepository) {
         this.userAccountRepository = userAccountRepository;
     }
@@ -27,7 +30,14 @@ public class UserAccountService {
         return userAccountMapper.toDto(userAccount);
     }
 
-    public UserAccountDto createUserAccount(UserAccountDto userAccountDto){
+    public UserAccountDto createUserAccount(DefaultUserAccountDto defaultUserAccountDto){
+        UserAccount userAccount = new UserAccount();
+        userAccount.setUserId(defaultUserAccountDto.getUserId());
+        userAccountRepository.save(userAccount);
+        return userAccountMapper.toDto(userAccount);
+    }
+
+    public UserAccountDto createUserAccountOld(UserAccountDto userAccountDto){
         UserAccount userAccount = userAccountMapper.toEntity(userAccountDto);
         Long userId = AuthDetails.getAuthUserId();
         userAccount.setUserId(userId);
@@ -42,7 +52,6 @@ public class UserAccountService {
         }
         userAccount.setFirstName(userAccountDto.getFirstName());
         userAccount.setLastName(userAccountDto.getLastName());
-
         return userAccountMapper.toDto(userAccountRepository.save(userAccount));
 
     }
