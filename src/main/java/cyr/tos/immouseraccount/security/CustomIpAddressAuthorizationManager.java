@@ -31,6 +31,7 @@ public class CustomIpAddressAuthorizationManager implements AuthorizationManager
 
         // Vérifier si l'IP et le port correspondent
         boolean isAuthorized = allowedIp.equals(ip) && allowedPort == port;
+        System.out.println("+++++++++++++>"+isAuthorized);
         return new AuthorizationDecision(isAuthorized);
     }
 }
